@@ -13,7 +13,6 @@
 <script setup>
 import {  useRouter } from "vue-router";
 import { getToken } from "@/services/AuthService";
-//import { fetchcasts } from "../services/SpotifyService";
 import store from "@/store";
 
 

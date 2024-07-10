@@ -30,7 +30,7 @@
 
 
       <v-list lines="two" v-else class="bg-black">
-        <v-list-item v-for="episode in episodes" :key="episode.id" :title="episode.name" :subtitle="episode.description" :prepend-avatar="episode.images[0]?.url" class="m-2" style="background:#121212;">
+        <v-list-item v-model="episodes" v-for="episode in episodes" :key="episode.id" :title="episode.name" :subtitle="episode.description" :prepend-avatar="episode.images[0]?.url" class="m-2" style="background:#121212;">
         </v-list-item>
         <v-card class="flex bg-black pb-16 items-center justify-center mt-4" style="display:flex;" >
          <v-btn class="mx-auto mt-8" color="success" @click="goToShow">Listen on Spotify =></v-btn>

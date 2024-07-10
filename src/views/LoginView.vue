@@ -9,21 +9,12 @@
 
 <script setup>
 import {ref, onMounted } from 'vue'
+import {  useRouter } from "vue-router";
 import { authenticateWithSpotify } from "@/services/AuthService"
 import store from '../store'
-
-const userName = ref('');
-const error = ref('');
-
-const firstNameRules = [
-  value => {
-    if (value?.length > 3) return true
-    return 'First name must be at least 3 characters.'
-  },
-]
-
+  
+const router = useRouter();
 if(localStorage.getItem('access_token') !== null){
-  console.log("true");
   router.push('/');
 }
 

@@ -41,6 +41,7 @@ onMounted(  () => {
         class="flex gap-4 sm:gap-6 flex-wrap justify-center items-center w-full pl-4 sm:pl-4  "
     >
       <SpotCard
+	v-model="shows"
         v-for="show in shows"
         :key="show.id"
         :posterImg="show.images[0].url"

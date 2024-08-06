@@ -1,40 +1,42 @@
 const generateRandomString = (length) => {
-  const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const possible =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   const values = crypto.getRandomValues(new Uint8Array(length));
   return Array.from(values)
     .map((x) => possible[x % possible.length])
-    .join('');
+    .join("");
 };
 
 const sha256 = async (plain) => {
   const encoder = new TextEncoder();
   const data = encoder.encode(plain);
-  const hashed = await window.crypto.subtle.digest('SHA-256', data);
+  const hashed = await window.crypto.subtle.digest("SHA-256", data);
   return base64encode(hashed);
 };
 
 const base64encode = (input) => {
   return btoa(String.fromCharCode(...new Uint8Array(input)))
-    .replace(/=/g, '')
-    .replace(/\+/g, '-')
-    .replace(/\//g, '_');
+    .replace(/=/g, "")
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_");
 };
 
-const clientId = "a7bee7f7781348199877e340dae76515";
+const clientId = "f64ad8be70dd426fae602cfa7c877f5d";
 const redirectUri = `${window.location.origin}/redirect`;
-const scope = 'user-read-private user-read-email';
+const scope =
+  "user-read-private user-read-email playlist-read-private playlist-read-collaborative playlist-modify-private playlist-modify-public user-top-read user-follow-read";
 
 const authenticateWithSpotify = () => {
   const codeVerifier = generateRandomString(64);
-  window.localStorage.setItem('code_verifier', codeVerifier);
+  window.localStorage.setItem("code_verifier", codeVerifier);
 
   sha256(codeVerifier).then((codeChallenge) => {
     const authUrl = new URL("https://accounts.spotify.com/authorize");
     const params = {
-      response_type: 'code',
+      response_type: "code",
       client_id: clientId,
       scope: scope,
-      code_challenge_method: 'S256',
+      code_challenge_method: "S256",
       code_challenge: codeChallenge,
       redirect_uri: redirectUri,
     };
@@ -44,49 +46,61 @@ const authenticateWithSpotify = () => {
 };
 
 const getToken = async (code) => {
-  const codeVerifier = window.localStorage.getItem('code_verifier');
+  const codeVerifier = window.localStorage.getItem("code_verifier");
 
   const payload = {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
+      "Content-Type": "application/x-www-form-urlencoded",
     },
     body: new URLSearchParams({
       client_id: clientId,
-      grant_type: 'authorization_code',
+      grant_type: "authorization_code",
       code: code,
       redirect_uri: redirectUri,
       code_verifier: codeVerifier,
     }),
   };
 
-  const response = await fetch('https://accounts.spotify.com/api/token', payload);
+  const response = await fetch(
+    "https://accounts.spotify.com/api/token",
+    payload,
+  );
   const data = await response.json();
-  localStorage.setItem('access_token', data.access_token);
-  localStorage.setItem('refresh_token', data.refresh_token);
-  localStorage.setItem('expires_in', data.expires_in);
+
+  localStorage.setItem("access_token", data.access_token);
+  localStorage.setItem("refresh_token", data.refresh_token);
+  localStorage.setItem("expires_in", data.expires_in);
 };
 
 const getRefreshToken = async () => {
-  const refreshToken = localStorage.getItem('refresh_token');
+  const refreshToken = localStorage.getItem("refresh_token");
+  console.log(!refreshToken);
 
   const payload = {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
+      "Content-Type": "application/x-www-form-urlencoded",
     },
     body: new URLSearchParams({
-      grant_type: 'refresh_token',
+      grant_type: "refresh_token",
       refresh_token: refreshToken,
       client_id: clientId,
     }),
   };
 
-  const response = await fetch('https://accounts.spotify.com/api/token', payload);
+  const response = await fetch(
+    "https://accounts.spotify.com/api/token",
+    payload,
+  );
   const data = await response.json();
-  localStorage.setItem('access_token', data.access_token);
-  localStorage.setItem('expires_in', data.expires_in);
+  localStorage.setItem("access_token", data.access_token);
+  localStorage.setItem("expires_in", data.expires_in);
+  localStorage.setItem("refresh_token", data.refresh_token);
+  if (data.error) {
+    localStorage.clear();
+  }
+  window.location.href = window.location.origin
 };
 
 export { authenticateWithSpotify, getToken, getRefreshToken };
-

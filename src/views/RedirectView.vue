@@ -18,13 +18,12 @@ import store from "@/store";
 
 const urlParams = new URLSearchParams(window.location.search);
 let code = urlParams.get('code');
-
+console.log(code)
 getToken(code);
 
 const router = useRouter();
 
 router.push('/');
-
 </script>
 
 <style scoped>

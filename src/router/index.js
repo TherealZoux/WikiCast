@@ -8,12 +8,12 @@ const router = createRouter({
     {
       path: "/login",
       name: "login",
-      component: ()=>import('@/views/LoginView.vue'),
+      component: () => import('@/views/LoginView.vue'),
     },
     {
       path: "/",
       name: "home",
-       component: ()=>import('@/views/HomeView.vue'),
+      component: () => import('@/views/HomeView.vue'),
     },
     {
       path: "/redirect",
@@ -22,18 +22,19 @@ const router = createRouter({
 
     },
     {
-      path: "/search",
-      name: "search",
-      component: ()=> import('@/views/SearchView.vue'),
+      path: "/dashboard",
+      name: "Dashboard",
+      component: () => import('@/views/DashboardView.vue'),
+
     },
     {
       path: "/favorite",
       name: "favorite",
-      component: ()=> import('@/views/favoriteView.vue'),
+      component: () => import('@/views/favoriteView.vue'),
     },
     {
-      path:"/show/:id",
-      component: ()=>import("@/views/showView.vue"),
+      path: "/show/:id",
+      component: () => import("@/views/showView.vue"),
     },
   ],
   linkActiveClass: 'active-link',

@@ -1,1 +1,0 @@
-import{l as e,o as t}from"./index-DxQWsM2D.js";const o={class:"m-auto text-center text-4xl text-[#A1C398]"},r={__name:"SearchView",setup(c){return(s,a)=>(t(),e("h1",o,"coming soon"))}};export{r as default};

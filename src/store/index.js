@@ -1,74 +1,125 @@
 // store.js
-
-
 import { createStore } from "vuex";
-import { fetchcasts, fetchEpisodes } from "@/services/SpotifyService";
+import {
+  fetchcasts,
+  fetchEpisodes,
+  fetchProfile,
+  getTopItems,
+} from "@/services/SpotifyService";
 
 export default createStore({
   state: {
     shows: [],
     episodes: [],
     profile: {},
-    error: null,
-    authToken: null,
+    artists: {},
+    topShows: [],
+    playlists: [],
+    loading: true,
+    searchQuery: "",
+    filteredShows: [],
   },
 
   mutations: {
     SET_SHOWS(state, data) {
       state.shows = data;
+      state.filteredShows = data; // Initialize filteredShows with the full list
     },
     SET_LOADING(state, isLoading) {
       state.loading = isLoading;
     },
-    SET_ERROR(state, error) {
-      state.error = error;
-    },
     SET_EPISODES(state, data) {
       state.episodes = data;
     },
-    SET_AUTH_TOKEN(state, token) {
-      state.authToken = token;
+    SET_SEARCH_QUERY(state, query) {
+      state.searchQuery = query;
     },
-    CLEAR_AUTH_TOKEN(state) {
-      state.authToken = null;
+    SET_FILTERED_SHOWS(state, filteredShows) {
+      state.filteredShows = filteredShows;
+    },
+    SET_PROFILE(state, data) {
+      state.profile = data;
+    },
+    SET_ARTISTS(state, data) {
+      state.artists = data;
+    },
+    SET_TOP_SHOWS(state, data) {
+      state.topShows = data;
+    },
+    SET_PLAYLISTS(state, data) {
+      state.playlists = data;
     },
   },
 
   actions: {
     async fetchData({ commit }) {
-      commit('SET_ERROR', null);
+      commit("SET_LOADING", true);
       try {
-        const data = await fetchcasts();
-        commit('SET_SHOWS', data);
+        if (localStorage.getItem("access_token")) {
+          const data = await fetchcasts();
+          commit("SET_SHOWS", data);
+          commit("SET_LOADING", false);
+        } else {
+          commit("SET_LOADING", false); // Handle the case where there's no token
+        }
       } catch (error) {
-        commit('SET_ERROR', error);
-      } finally {
-        commit('SET_LOADING', false);
+        console.error("Error fetching shows:", error);
+        commit("SET_LOADING", false); // Ensure loading state is turned off on error
       }
     },
     async fetchEpisodes({ commit }, showId) {
+      commit("SET_LOADING", true);
       try {
         const episodes = await fetchEpisodes(showId);
-        commit('SET_EPISODES', episodes.items);
+        commit("SET_EPISODES", episodes.items);
+        commit("SET_LOADING", false);
       } catch (error) {
         console.error("Error fetching episodes:", error);
       }
     },
-    setAuthToken({ commit }, token) {
-      commit('SET_AUTH_TOKEN', token);
+    filterShows({ commit, state }) {
+      const filteredShows = state.shows.filter((show) =>
+        show.name.toLowerCase().includes(state.searchQuery.toLowerCase()),
+      );
+      commit("SET_FILTERED_SHOWS", filteredShows);
     },
-    clearAuthToken({ commit }) {
-      commit('CLEAR_AUTH_TOKEN');
+    setSearchQuery({ commit, dispatch }, query) {
+      commit("SET_SEARCH_QUERY", query);
+      dispatch("filterShows");
+    },
+    async userProfile({ commit }) {
+      commit("SET_LOADING", true);
+      try {
+        const profile = await fetchProfile();
+        const artists = await getTopItems(
+          "https://api.spotify.com/v1/me/following?type=artist",
+        );
+        const topShows = await getTopItems(
+          "https://api.spotify.com/v1/me/top/tracks",
+        );
+        const playlists = await getTopItems(
+          "https://api.spotify.com/v1/me/playlists",
+        );
+        commit("SET_PROFILE", profile);
+        commit("SET_TOP_SHOWS", topShows.items);
+        commit("SET_PLAYLISTS", playlists.items);
+        commit("SET_ARTISTS", artists.artists.items);
+        commit("SET_LOADING", false);
+      } catch (error) {
+        console.error("Error fetching Profile:", error);
+      }
     },
   },
 
   getters: {
-    shows: state => state.shows,
-    episodes: state => state.episodes,
-    isLoading: state => state.loading,
-    error: state => state.error,
-    isAuthenticated: state => !!state.authToken,
-    authToken: state => state.authToken,
-  }
+    shows: (state) => state.shows,
+    episodes: (state) => state.episodes,
+    isLoading: (state) => state.loading,
+    searchQuery: (state) => state.searchQuery,
+    filteredShows: (state) => state.filteredShows,
+    profile: (state) => state.profile,
+    artists: (state) => state.artists,
+    topShows: (state) => state.topShows,
+    playlists: (state) => state.playlists,
+  },
 });
-

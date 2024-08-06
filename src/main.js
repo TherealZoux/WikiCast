@@ -6,16 +6,16 @@
 
 // Plugins
 import { registerPlugins } from "@/plugins";
-import store from "./store";
+import store from "@/store";
 import router from "@/router";
-import './assets/main.css'
+import "./assets/main.css";
 // tailwind style
-import "./index.css";
+import "@/index.css";
 
 // Components
 import App from "@/App.vue";
 
-store.dispatch('fetchData');
+store.dispatch("fetchData");
 // Composables
 import { createApp } from "vue";
 

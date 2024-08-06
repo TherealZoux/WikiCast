@@ -1,6 +1,8 @@
 
 <template>
-  <h1 class="m-auto text-center text-4xl text-[#A1C398]">coming soon</h1>
+  <section class="mt-[4rem] p-20">
+    <h1 class="m-auto text-center text-4xl text-[#fff]">coming soon</h1>
+  </section>
 </template>
 
 <script setup>

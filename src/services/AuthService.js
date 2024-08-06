@@ -21,7 +21,7 @@ const base64encode = (input) => {
     .replace(/\//g, "_");
 };
 
-const clientId = "f64ad8be70dd426fae602cfa7c877f5d";
+const clientId = "a7bee7f7781348199877e340dae76515";
 const redirectUri = `${window.location.origin}/redirect`;
 const scope =
   "user-read-private user-read-email playlist-read-private playlist-read-collaborative playlist-modify-private playlist-modify-public user-top-read user-follow-read";

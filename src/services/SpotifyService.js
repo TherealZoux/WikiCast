@@ -93,7 +93,7 @@ export const fetchProfile = async () => {
   try {
     const response = await axios.get(url, {
       headers: {
-        Authorization: "Bearer " + accessToken,
+        Authorization: "Bearer " + localStorage.getItem("access_token"),
       },
     });
     return response.data;
@@ -106,7 +106,7 @@ export const getTopItems = async (endPoint) => {
   try {
     const response = await axios.get(url, {
       headers: {
-        Authorization: "Bearer " + accessToken,
+        Authorization: "Bearer " + localStorage.getItem("access_token"),
       },
     });
     return response.data;

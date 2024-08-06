@@ -1,12 +1,12 @@
 <script setup>
 import { computed } from "vue";
-
 import { useStore } from "vuex";
 
 const store = useStore();
 const playlists = computed(() => store.getters.playlists);
 const validPlaylists = computed(()=>playlists.value.filter((playlist)=> playlist.images != null))
 const loading = computed(() => store.getters.isLoading);
+
 </script>
 
 
@@ -16,11 +16,16 @@ const loading = computed(() => store.getters.isLoading);
   >
     <ul class="flex flex-wrap gap-4 w-full">
       <showComponent
+        v-if="validPlaylists"
         v-for="playlist in validPlaylists"
         :showName="playlist.name"
         :showImg="playlist.images[0].url"
         :showArtist="playlist.owner.display_name"
         :showUrl="playlist.external_urls.spotify"
+      />
+      <showComponent
+        v-else
+        v-for="playlist in 12"
       />
     </ul>
   </section>

@@ -6,7 +6,7 @@
     <loadingComponent v-if="loading" class="flex m-auto" />
     <section
       v-else
-      class="m-4 flex gap-4 flex-col justify-between items-center p-4 bg-[#1a1a1a] rounded w-[80%] lg:w-full"
+      class="m-4 flex gap-4 flex-col justify-between items-center p-4 bg-[#1a1a1a] rounded w-full"
     >
       <div class="w-full flex flex-row h-full flex-wrap">
         <h1 class="text-[1.5rem] mb-2 ml-[0.5rem] roboto-bold">Following</h1>

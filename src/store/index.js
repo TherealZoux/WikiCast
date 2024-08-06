@@ -95,10 +95,10 @@ export default createStore({
           "https://api.spotify.com/v1/me/following?type=artist",
         );
         const topShows = await getTopItems(
-          "https://api.spotify.com/v1/me/top/tracks",
+          "https://api.spotify.com/v1/me/top/tracks?limit=10",
         );
         const playlists = await getTopItems(
-          "https://api.spotify.com/v1/me/playlists",
+          "https://api.spotify.com/v1/me/playlists?limit=10",
         );
         commit("SET_PROFILE", profile);
         commit("SET_TOP_SHOWS", topShows.items);

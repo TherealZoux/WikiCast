@@ -1,10 +1,10 @@
 <script setup>
 import { computed } from "vue";
-
 import { useStore } from "vuex";
 
 const store = useStore();
 const user = computed(() => store.getters.profile);
+
 </script>
 
 <template>
@@ -37,13 +37,13 @@ const user = computed(() => store.getters.profile);
 
             <tr>
               <td class="px-2 py-2 text-gray-500 font-semibold">Id</td>
-              <td class="px-2 py-2">31zkvnjkkicsv2klwb4s4ll56ul4</td>
+              <td class="px-2 py-2">{{ user.id }}</td>
             </tr>
             <tr>
               <td class="px-2 py-2 text-gray-500 font-semibold">
                 Subscription
               </td>
-              <td class="px-2 py-2">Free</td>
+              <td class="px-2 py-2">{{ user.product }}</td>
             </tr>
           </tbody>
         </table>

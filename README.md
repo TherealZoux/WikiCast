@@ -2,6 +2,8 @@
 
 Spotcast is a Vue 3 application that integrates with the Spotify Web API using **Authorization Code Flow with PKCE**. It allows users to authenticate with their Spotify account and explore podcasts, shows, playlists, and profile-related data through a clean dashboard interface.
 
+<img width="1280" height="620" alt="image" src="https://github.com/user-attachments/assets/5943ba45-5dea-47c2-bf3e-459b540ca764" />
+
 ## Features
 
 * Spotify authentication with **PKCE** (Authorization Code with Proof Key for Code Exchange)

@@ -1,79 +1,208 @@
-# Vuetify (Default)
+# Spotcast — Spotify PKCE Auth Flow
 
-This is the official scaffolding tool for Vuetify, designed to give you a head start in building your new Vuetify application. It sets up a base template with all the necessary configurations and standard directory structure, enabling you to begin development without the hassle of setting up the project from scratch.
+Spotcast is a Vue 3 application that integrates with the Spotify Web API using **Authorization Code Flow with PKCE**. It allows users to authenticate with their Spotify account and explore podcasts, shows, playlists, and profile-related data through a clean dashboard interface.
 
-## ❗️ Important Links
+## Features
 
-- 📄 [Docs](https://vuetifyjs.com/)
-- 🚨 [Issues](https://issues.vuetifyjs.com/)
-- 🏬 [Store](https://store.vuetifyjs.com/)
-- 🎮 [Playground](https://play.vuetifyjs.com/)
-- 💬 [Discord](https://community.vuetifyjs.com)
+* Spotify authentication with **PKCE** (Authorization Code with Proof Key for Code Exchange)
+* Secure token handling without exposing client secrets
+* User profile dashboard
+* View followed podcasts/shows
+* Browse top shows
+* Display user playlists
+* View saved episodes
+* Dedicated show details page
+* Loading states for async API requests
+* Responsive UI built with Vuetify + TailwindCSS
 
-## 💿 Install
+---
 
-Set up your project using your preferred package manager. Use the corresponding command to install the dependencies:
+## Tech Stack
 
-| Package Manager                                                | Command        |
-|---------------------------------------------------------------|----------------|
-| [yarn](https://yarnpkg.com/getting-started)                   | `yarn install` |
-| [npm](https://docs.npmjs.com/cli/v7/commands/npm-install)     | `npm install`  |
-| [pnpm](https://pnpm.io/installation)                          | `pnpm install` |
-| [bun](https://bun.sh/#getting-started)                        | `bun install`  |
+* **Vue 3**
+* **Vite**
+* **Vue Router**
+* **Pinia / Vue Store**
+* **Vuetify**
+* **TailwindCSS**
+* **Spotify Web API**
 
-After completing the installation, your environment is ready for Vuetify development.
+---
 
-## ✨ Features
-
-- 🖼️ **Optimized Front-End Stack**: Leverage the latest Vue 3 and Vuetify 3 for a modern, reactive UI development experience. [Vue 3](https://v3.vuejs.org/) | [Vuetify 3](https://vuetifyjs.com/en/)
-- 🗃️ **State Management**: Integrated with [Pinia](https://pinia.vuejs.org/), the intuitive, modular state management solution for Vue.
-- 🚦 **Routing and Layouts**: Utilizes Vue Router for SPA navigation and vite-plugin-vue-layouts for organizing Vue file layouts. [Vue Router](https://router.vuejs.org/) | [vite-plugin-vue-layouts](https://github.com/JohnCampionJr/vite-plugin-vue-layouts)
-- ⚡ **Next-Gen Tooling**: Powered by Vite, experience fast cold starts and instant HMR (Hot Module Replacement). [Vite](https://vitejs.dev/)
-- 🧩 **Automated Component Importing**: Streamline your workflow with unplugin-vue-components, automatically importing components as you use them. [unplugin-vue-components](https://github.com/antfu/unplugin-vue-components)
-
-These features are curated to provide a seamless development experience from setup to deployment, ensuring that your Vuetify application is both powerful and maintainable.
-
-## 💡 Usage
-
-This section covers how to start the development server and build your project for production.
-
-### Starting the Development Server
-
-To start the development server with hot-reload, run the following command. The server will be accessible at [http://localhost:3000](http://localhost:3000):
+## Project Structure
 
 ```bash
-yarn dev
+src/
+├── assets/          # Static assets, logos, images, styles
+├── components/      # Reusable UI components
+├── plugins/         # Vuetify configuration
+├── router/          # Route definitions
+├── services/        # Spotify + Auth API services
+├── store/           # Global state management
+└── views/           # Page views
 ```
 
-(Repeat for npm, pnpm, and bun with respective commands.)
+---
 
-> Add NODE_OPTIONS='--no-warnings' to suppress the JSON import warnings that happen as part of the Vuetify import mapping. If you are on Node [v21.3.0](https://nodejs.org/en/blog/release/v21.3.0) or higher, you can change this to NODE_OPTIONS='--disable-warning=5401'. If you don't mind the warning, you can remove this from your package.json dev script.
+## Authentication Flow
 
-### Building for Production
+This project uses Spotify’s **Authorization Code with PKCE Flow**.
 
-To build your project for production, use:
+### Flow overview
+
+1. User clicks **Login with Spotify**
+2. App generates:
+
+   * `code_verifier`
+   * `code_challenge`
+3. User is redirected to Spotify authorization page
+4. Spotify redirects back with authorization code
+5. App exchanges the code for:
+
+   * Access token
+   * Refresh token
+6. Authenticated requests are made to Spotify Web API
+
+---
+
+## Environment Variables
+
+Create a `.env` file in the project root:
+
+```env
+VITE_SPOTIFY_CLIENT_ID=your_spotify_client_id
+VITE_SPOTIFY_REDIRECT_URI=http://localhost:5173/callback
+```
+
+### Get Spotify credentials
+
+1. Open the Spotify Developer Dashboard
+2. Create an app
+3. Copy your Client ID
+4. Add your redirect URI to the app settings
+
+Spotify Developer Dashboard:
+
+https://developer.spotify.com/dashboard
+
+---
+
+## Installation
+
+Clone the repository:
 
 ```bash
-yarn build
+git clone https://github.com/your-username/spotcast.git
+cd spotcast
 ```
 
-(Repeat for npm, pnpm, and bun with respective commands.)
+Install dependencies:
 
-Once the build process is completed, your application will be ready for deployment in a production environment.
+```bash
+npm install
+```
 
-## 💪 Support Vuetify Development
+---
 
-This project is built with [Vuetify](https://vuetifyjs.com/en/), a UI Library with a comprehensive collection of Vue components. Vuetify is an MIT licensed Open Source project that has been made possible due to the generous contributions by our [sponsors and backers](https://vuetifyjs.com/introduction/sponsors-and-backers/). If you are interested in supporting this project, please consider:
+## Development
 
-- [Requesting Enterprise Support](https://support.vuetifyjs.com/)
-- [Sponsoring John on Github](https://github.com/users/johnleider/sponsorship)
-- [Sponsoring Kael on Github](https://github.com/users/kaelwd/sponsorship)
-- [Supporting the team on Open Collective](https://opencollective.com/vuetify)
-- [Becoming a sponsor on Patreon](https://www.patreon.com/vuetify)
-- [Becoming a subscriber on Tidelift](https://tidelift.com/subscription/npm/vuetify)
-- [Making a one-time donation with Paypal](https://paypal.me/vuetify)
+Run locally:
 
-## 📑 License
-[MIT](http://opensource.org/licenses/MIT)
+```bash
+npm run dev
+```
 
-Copyright (c) 2016-present Vuetify, LLC
+Vite will start the development server.
+
+Default:
+
+```bash
+http://localhost:5173
+```
+
+---
+
+## Build for Production
+
+```bash
+npm run build
+```
+
+Preview production build:
+
+```bash
+npm run preview
+```
+
+---
+
+## Deployment
+
+This project includes `vercel.json`, making it ready for deployment on Vercel.
+
+Deploy with:
+
+```bash
+vercel
+```
+
+or connect the repository directly in the Vercel dashboard.
+
+---
+
+## Main Views
+
+### HomeView
+
+Landing page of the application.
+
+### LoginView
+
+Handles Spotify login initiation.
+
+### RedirectView
+
+Processes Spotify callback and token exchange.
+
+### DashboardView
+
+Displays authenticated user content.
+
+### showView
+
+Detailed view for an individual podcast/show.
+
+---
+
+## Services
+
+### AuthService.js
+
+Responsible for:
+
+* PKCE generation
+* Spotify authorization redirect
+* Token exchange
+* Authentication helpers
+
+### SpotifyService.js
+
+Responsible for:
+
+* Fetching user profile
+* Fetching playlists
+* Fetching followed shows
+* Fetching saved episodes
+* Fetching show details
+
+---
+
+## License
+
+MIT
+
+---
+
+## Author
+
+Built by **therealzoux**
